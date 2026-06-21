@@ -6,67 +6,100 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-black text-white">
 
-      <nav className="flex justify-between items-center p-6 border-b border-zinc-800 relative">
+      <nav className="flex justify-between items-center p-6 border-b border-zinc-800">
 
-        <h1 className="text-3xl font-bold text-green-400">
-          FREECOIN
-        </h1>
+  <h1 className="text-3xl font-bold text-green-400">
+    FREECOIN
+  </h1>
 
-        <details className="relative">
+  <div className="flex flex-wrap gap-4 text-sm md:text-base">
 
-          <summary className="cursor-pointer list-none bg-zinc-900 px-4 py-2 rounded-xl border border-zinc-700">
-            ☰ Menu
-          </summary>
+    <details className="relative">
+      <summary className="cursor-pointer bg-zinc-900 px-4 py-2 rounded-xl border border-zinc-700">
+        🎯 Earn
+      </summary>
 
-          <div className="absolute right-0 mt-2 w-64 bg-zinc-950 border border-zinc-800 rounded-2xl p-4 flex flex-col gap-3 z-50">
+      <div className="absolute right-0 mt-2 w-64 bg-zinc-950 border border-zinc-800 rounded-2xl p-4 flex flex-col gap-3 z-50">
 
-            <a href="/referrals">👥 Referrals</a>
+        <a href="/">
+          🏠 Home
+        </a>
 
-            <a href="#earn">💰 Earn</a>
+        <a href="/leaderboard">
+          🏆 Leaderboard
+        </a>
 
-            <a href="/create-task">
-              📝 Create Task
-            </a>
+        <a href="/referrals">
+          👥 Referrals
+        </a>
 
-            <a href="/leaderboard">
-              🏆 Leaderboard
-            </a>
+        <a href="/profile">
+          👤 Profile
+        </a>
 
-            <a href="/create-fundraiser">
-              ❤️ Fundraiser
-            </a>
+      </div>
+    </details>
 
-            <a href="/dashboard/advertiser">
-              📊 Advertiser
-            </a>
+    <details className="relative">
+      <summary className="cursor-pointer bg-zinc-900 px-4 py-2 rounded-xl border border-zinc-700">
+        📢 Advertiser
+      </summary>
 
-            <a href="/fundraisers">
-              🎯 Fundraisers
-            </a>
+      <div className="absolute right-0 mt-2 w-64 bg-zinc-950 border border-zinc-800 rounded-2xl p-4 flex flex-col gap-3 z-50">
 
-            <a href="/dashboard/tasks">
-              📋 Dashboard
-            </a>
-
-            <a href="/profile">
-              👤 Profile
-            </a>
-
-            <a href="/whitepaper">
-              📄 Whitepaper
-            </a>
-
-            <a href="/buy">
-              🪙 Buy Token
-            </a>
-<a href="/admin">
-  🛠 Admin
+        <a href="/create-task">
+          ➕ Create Campaign
+        </a>
+<a href="/advertise">
+  🚀 Advertise
 </a>
-          </div>
+        <a href="/dashboard/advertiser">
+          📊 My Campaigns
+        </a>
 
-        </details>
+        <a href="/buy">
+          💳 Payments
+        </a>
 
-      </nav>
+      </div>
+    </details>
+
+    <details className="relative">
+      <summary className="cursor-pointer bg-zinc-900 px-4 py-2 rounded-xl border border-zinc-700">
+        ❤️ Donate
+      </summary>
+
+      <div className="absolute right-0 mt-2 w-64 bg-zinc-950 border border-zinc-800 rounded-2xl p-4 flex flex-col gap-3 z-50">
+
+        <a href="/fundraisers">
+          ❤️ Fundraisers
+        </a>
+
+        <a href="/create-fundraiser">
+          ➕ Create Fundraiser
+        </a>
+
+      </div>
+    </details>
+
+    <a
+      href="/whitepaper"
+      className="bg-zinc-900 px-4 py-2 rounded-xl border border-zinc-700"
+    >
+      📄 Whitepaper
+    </a>
+
+    <a
+      href="/admin"
+      className="bg-red-900 px-4 py-2 rounded-xl border border-red-700"
+    >
+      🛠 Admin
+    </a>
+
+  </div>
+
+
+        </nav>
 
       <section className="flex flex-col items-center justify-center text-center py-24 px-6">
 

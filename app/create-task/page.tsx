@@ -10,7 +10,7 @@ export default function CreateTask() {
   const [url, setUrl] = useState("");
   const [reward, setReward] = useState(10);
   const [budget, setBudget] = useState(1000);
-
+const [txHash, setTxHash] = useState("");
   async function createTask() {
     const wallet =
       localStorage.getItem("wallet");
@@ -24,14 +24,20 @@ export default function CreateTask() {
       .from("tasks")
       .insert([
         {
-          title,
-          description,
-          url,
-          reward,
-          budget,
-          advertiser_wallet: wallet,
-          status: "active",
-        },
+  
+  title,
+  description,
+  url,
+  reward,
+  budget,
+  advertiser_wallet: wallet,
+  status: "pending",
+  payment_status: "unpaid",
+  tx_hash: txHash,
+  completions: 0,
+  spent: 0,
+
+}
       ]);
 
     if (error) {
@@ -44,7 +50,8 @@ export default function CreateTask() {
       setDescription("");
       setUrl("");
       setReward(10);
-      setBudget(1000);
+      setBudget(10000);
+      setTxHash("");
     }
   }
 
@@ -169,7 +176,12 @@ export default function CreateTask() {
               <span className="text-green-400">
                 Budget: {budget}
               </span>
-
+<input
+  className="bg-zinc-900 border border-zinc-800 rounded-xl p-4"
+  placeholder="Transaction Hash"
+  value={txHash}
+  onChange={(e) => setTxHash(e.target.value)}
+/>
             </div>
 
           </div>
@@ -177,6 +189,25 @@ export default function CreateTask() {
           <div className="mt-6 text-zinc-500">
             This is how users will see your task.
           </div>
+<div className="mt-8 border border-yellow-500 rounded-2xl p-5 bg-zinc-900">
+
+  <h3 className="text-xl font-bold text-yellow-400 mb-3">
+    Payment Information
+  </h3>
+
+  <p className="text-zinc-400 mb-2">
+    Send SOL or USDC to:
+  </p>
+
+  <div className="bg-black p-3 rounded-xl break-all text-green-400">
+    HhZz13BAsk4peMTL1mwqu7yF2eCZJbS8NfJY5SfoApZ2
+  </div>
+
+  <p className="text-zinc-500 mt-4">
+    After payment your task will be reviewed by the admin and activated.
+  </p>
+
+</div>
 
         </div>
 

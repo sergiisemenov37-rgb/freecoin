@@ -155,6 +155,18 @@ async function approveCompletion(
 
   loadData();
 }
+async function markPaid(
+  id: number
+) {
+  await supabase
+    .from("tasks")
+    .update({
+      payment_status: "paid",
+    })
+    .eq("id", id);
+
+  loadData();
+}
   async function activateTask(
     id: number
   ) {
@@ -341,7 +353,17 @@ async function approveCompletion(
                 </p>
 
               </div>
+<p className="text-zinc-500 break-all">
+  Advertiser:
+  {" "}
+  {task.advertiser_wallet}
+</p>
 
+<p className="text-zinc-500">
+  Payment:
+  {" "}
+  {task.payment_status || "unpaid"}
+</p>
               <div className="flex gap-2">
 
                 <button
@@ -365,7 +387,16 @@ async function approveCompletion(
                 >
                   Pause
                 </button>
-
+<button
+  onClick={() =>
+    markPaid(
+      task.id
+    )
+  }
+  className="bg-purple-600 px-4 py-2 rounded-xl"
+>
+  Paid
+</button>
                 <button
                   onClick={() =>
                     deleteTask(

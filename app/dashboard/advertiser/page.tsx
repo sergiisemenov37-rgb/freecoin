@@ -8,170 +8,179 @@ export default function AdvertiserDashboard() {
   const [wallet, setWallet] = useState("");
 
   useEffect(() => {
-    loadTasks();
+    const w = localStorage.getItem("wallet");
+
+    if (w) {
+      setWallet(w);
+      loadTasks(w);
+    }
   }, []);
 
-  async function loadTasks() {
-    const savedWallet = localStorage.getItem("wallet");
-
-    if (!savedWallet) {
-      return;
-    }
-
-    setWallet(savedWallet);
-
-    const { data, error } = await supabase
+  async function loadTasks(walletAddress: string) {
+    const { data } = await supabase
       .from("tasks")
       .select("*")
-      .eq("advertiser_wallet", savedWallet)
+      .eq("advertiser_wallet", walletAddress)
       .order("id", { ascending: false });
 
-    if (!error && data) {
-      setTasks(data);
-    }
+    setTasks(data || []);
   }
 
   async function deleteTask(id: number) {
-    const ok = confirm("Delete task?");
+    const confirmed = confirm(
+      "Delete this campaign?"
+    );
 
-    if (!ok) return;
+    if (!confirmed) return;
 
     await supabase
       .from("tasks")
       .delete()
       .eq("id", id);
 
-    loadTasks();
-  }
-
-  async function pauseTask(id: number) {
-    await supabase
-      .from("tasks")
-      .update({
-        status: "paused",
-      })
-      .eq("id", id);
-
-    loadTasks();
-  }
-
-  async function activateTask(id: number) {
-    await supabase
-      .from("tasks")
-      .update({
-        status: "active",
-      })
-      .eq("id", id);
-
-    loadTasks();
+    loadTasks(wallet);
   }
 
   return (
     <main className="min-h-screen bg-black text-white p-6">
 
-      <h1 className="text-5xl font-bold text-center mb-10">
-        Advertiser Dashboard
+      <h1 className="text-5xl font-bold mb-10">
+        📢 Advertiser Dashboard
       </h1>
 
-      <div className="max-w-6xl mx-auto">
+      <div className="grid md:grid-cols-4 gap-4 mb-10">
 
-        <div className="mb-8 border border-zinc-800 rounded-2xl p-6 bg-zinc-950">
-          <p className="text-zinc-400">
-            Wallet
+        <div className="border border-zinc-800 rounded-2xl p-5 bg-zinc-950">
+          <p className="text-zinc-500">
+            Campaigns
           </p>
 
-          <p className="text-green-400 break-all mt-2">
-            {wallet}
+          <p className="text-3xl font-bold text-green-400">
+            {tasks.length}
           </p>
         </div>
 
-        <div className="grid gap-6">
+        <div className="border border-zinc-800 rounded-2xl p-5 bg-zinc-950">
+          <p className="text-zinc-500">
+            Active
+          </p>
 
-          {tasks.map((task) => (
-            <div
-              key={task.id}
-              className="border border-zinc-800 rounded-2xl p-6 bg-zinc-950"
-            >
+          <p className="text-3xl font-bold text-blue-400">
+            {
+              tasks.filter(
+                (t) => t.status === "active"
+              ).length
+            }
+          </p>
+        </div>
 
-              <div className="flex justify-between items-center flex-wrap gap-4">
+        <div className="border border-zinc-800 rounded-2xl p-5 bg-zinc-950">
+          <p className="text-zinc-500">
+            Pending
+          </p>
 
-                <div>
+          <p className="text-3xl font-bold text-yellow-400">
+            {
+              tasks.filter(
+                (t) => t.status === "pending"
+              ).length
+            }
+          </p>
+        </div>
 
-                  <h2 className="text-2xl font-bold">
-                    {task.title}
-                  </h2>
+        <div className="border border-zinc-800 rounded-2xl p-5 bg-zinc-950">
+          <p className="text-zinc-500">
+            Completed
+          </p>
 
-                  <p className="text-zinc-500 mt-2">
-                    {task.url}
-                  </p>
+          <p className="text-3xl font-bold text-pink-400">
+            {
+              tasks.filter(
+                (t) => t.status === "completed"
+              ).length
+            }
+          </p>
+        </div>
 
-                </div>
+      </div>
 
-                <div className="text-right">
+      <div className="flex flex-col gap-4">
 
-                  <p className="text-yellow-400 text-xl font-bold">
+        {tasks.map((task) => (
+
+          <div
+            key={task.id}
+            className="border border-zinc-800 rounded-2xl p-6 bg-zinc-950"
+          >
+
+            <div className="flex justify-between items-start">
+
+              <div>
+
+                <h2 className="text-2xl font-bold">
+                  {task.title}
+                </h2>
+
+                <p className="text-zinc-500 mt-2">
+                  {task.description}
+                </p>
+
+                <div className="mt-4 flex flex-wrap gap-4">
+
+                  <span className="text-green-400">
+                    Budget: {task.budget}
+                  </span>
+
+                  <span className="text-yellow-400">
                     Reward: {task.reward}
-                  </p>
+                  </span>
 
-                  <p className="text-green-400">
-                    Budget: {task.budget || 0}
-                  </p>
+                  <span className="text-blue-400">
+                    Spent: {task.spent || 0}
+                  </span>
 
-                  <p className="text-blue-400">
-                    Completions: {task.completions || 0}
-                  </p>
+                  <span className="text-pink-400">
+                    Completions:{" "}
+                    {task.completions || 0}
+                  </span>
 
-                  <p
-                    className={
-                      task.status === "active"
-                        ? "text-green-500"
-                        : "text-red-500"
-                    }
-                  >
-                    {task.status}
-                  </p>
+                </div>
+
+                <div className="mt-3 flex gap-4">
+
+                  <span>
+                    Status:
+                    <span className="ml-2 text-green-400">
+                      {task.status}
+                    </span>
+                  </span>
+
+                  <span>
+                    Payment:
+                    <span className="ml-2 text-yellow-400">
+                      {task.payment_status ||
+                        "unpaid"}
+                    </span>
+                  </span>
 
                 </div>
 
               </div>
 
-              <div className="flex gap-3 mt-6">
-
-                {task.status === "active" ? (
-                  <button
-                    onClick={() => pauseTask(task.id)}
-                    className="bg-yellow-600 px-4 py-2 rounded-xl font-bold"
-                  >
-                    Pause
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => activateTask(task.id)}
-                    className="bg-green-600 px-4 py-2 rounded-xl font-bold"
-                  >
-                    Activate
-                  </button>
-                )}
-
-                <button
-                  onClick={() => deleteTask(task.id)}
-                  className="bg-red-600 px-4 py-2 rounded-xl font-bold"
-                >
-                  Delete
-                </button>
-
-              </div>
+              <button
+                onClick={() =>
+                  deleteTask(task.id)
+                }
+                className="bg-red-600 hover:bg-red-500 px-4 py-2 rounded-xl"
+              >
+                Delete
+              </button>
 
             </div>
-          ))}
 
-          {tasks.length === 0 && (
-            <div className="text-center text-zinc-500 py-20">
-              No tasks created yet
-            </div>
-          )}
+          </div>
 
-        </div>
+        ))}
 
       </div>
 
