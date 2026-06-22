@@ -88,14 +88,34 @@ export default function Home() {
     >
       📄 Whitepaper
     </a>
-
+<a href="/roadmap">
+  🗺 Roadmap
+</a>
     <a
       href="/admin"
       className="bg-red-900 px-4 py-2 rounded-xl border border-red-700"
     >
       🛠 Admin
     </a>
+<a
+  href="/tokenomics"
+  className="bg-zinc-900 px-4 py-2 rounded-xl border border-zinc-700"
+>
+  🪙 Tokenomics
+</a>
 
+<a
+  href="/grants"
+  className="bg-zinc-900 px-4 py-2 rounded-xl border border-zinc-700"
+>
+  🚀 Grants
+</a>
+<a
+  href="/investors"
+  className="bg-zinc-900 px-4 py-2 rounded-xl border border-zinc-700"
+>
+  🚀 Investors
+</a>
   </div>
 
 
